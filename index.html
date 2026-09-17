@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>THE LAST MESSAGE</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+background:#05060a;
+color:white;
+font-family:Arial,Helvetica,sans-serif;
+overflow-x:hidden;
+}
+
+button{
+font-family:inherit;
+}
+
+.app{
+min-height:100vh;
+background:
+radial-gradient(circle at top,#25293a 0%,#0b0d14 35%,#05060a 100%);
+}
+
+header{
+height:65px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 25px;
+position:sticky;
+top:0;
+z-index:10;
+background:rgba(8,9,14,.92);
+border-bottom:1px solid #292d3a;
+backdrop-filter:blur(15px);
+}
+
+.logo{
+font-weight:bold;
+letter-spacing:3px;
+}
+
+.logo span{
+color:#9568ff;
+}
+
+.status{
+font-size:12px;
+color:#858da0;
+}
+
+.screen{
+display:none;
+}
+
+.screen.active{
+display:block;
+}
+
+/* MENU */
+
+.hero{
+min-height:calc(100vh - 65px);
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:30px;
+}
+
+.heroCard{
+max-width:850px;
+}
+
+.kicker{
+color:#a276ff;
+letter-spacing:6px;
+font-size:12px;
+}
+
+.title{
+font-size:clamp(50px,10vw,100px);
+font-weight:900;
+line-height:.88;
+letter-spacing:-5px;
+margin:25px 0;
+}
+
+.subtitle{
+color:#9da5b6;
+line-height:1.7;
+max-width:650px;
+margin:auto;
+}
+
+.actions{
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+margin-top:30px;
+}
+
+.btn{
+background:#141824;
+color:white;
+border:1px solid #353b4c;
+border-radius:12px;
+padding:14px 20px;
+cursor:pointer;
+transition:.2s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+border-color:#9366ff;
+}
+
+.btn.primary{
+background:#8e62ff;
+border-color:#8e62ff;
+}
+
+/* GAME */
+
+.wrap{
+max-width:1150px;
+margin:auto;
+padding:25px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:18px;
+}
+
+.card{
+background:#0d1018;
+border:1px solid #292e3c;
+border-radius:18px;
+padding:18px;
+box-shadow:0 15px 50px #0007;
+}
+
+.scene{
+height:380px;
+position:relative;
+overflow:hidden;
+border-radius:15px;
+background:#080a0f;
+border:1px solid #303646;
+}
+
+.scene svg{
+width:100%;
+height:100%;
+}
+
+.sceneLabel{
+position:absolute;
+left:15px;
+bottom:15px;
+background:#05060acc;
+padding:9px 12px;
+border-radius:8px;
+font-size:11px;
+color:#adb4c2;
+}
+
+.tabs{
+display:flex;
+gap:8px;
+overflow:auto;
+margin:16px 0;
+}
+
+.tab{
+border:1px solid #2c3140;
+background:#10131c;
+color:#9199aa;
+padding:9px 14px;
+border-radius:20px;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.tab.on{
+border-color:#9568ff;
+color:white;
+}
+
+.list{
+display:grid;
+gap:10px;
+}
+
+.clue{
+display:flex;
+gap:13px;
+align-items:center;
+background:#0b0e15;
+border:1px solid #292e3c;
+border-radius:13px;
+padding:12px;
+cursor:pointer;
+transition:.2s;
+}
+
+.clue:hover{
+border-color:#8e62ff;
+transform:translateX(3px);
+}
+
+.clue.lock{
+opacity:.4;
+cursor:not-allowed;
+}
+
+.icon{
+min-width:44px;
+width:44px;
+height:44px;
+display:grid;
+place-items:center;
+border-radius:10px;
+background:#171b26;
+font-size:21px;
+}
+
+.clue b{
+display:block;
+margin-bottom:4px;
+}
+
+.clue small{
+color:#81899a;
+}
+
+/* PAINEL */
+
+.stat{
+display:flex;
+justify-content:space-between;
+margin:10px 0;
+color:#929aab;
+font-size:13px;
+}
+
+.stat b{
+color:white;
+}
+
+.bar{
+width:100%;
+height:8px;
+background:#191d27;
+border-radius:10px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+width:50%;
+background:#8e62ff;
+transition:.4s;
+}
+
+/* CHAT */
+
+.chat{
+height:420px;
+overflow-y:auto;
+background:#080b11;
+border:1px solid #292e3c;
+border-radius:14px;
+padding:15px;
+}
+
+.bubble{
+max-width:80%;
+padding:12px;
+margin:8px 0;
+border-radius:14px;
+line-height:1.5;
+}
+
+.them{
+background:#181c27;
+border-bottom-left-radius:4px;
+}
+
+.me{
+margin-left:auto;
+background:#6744b7;
+border-bottom-right-radius:4px;
+}
+
+.choice{
+width:100%;
+text-align:left;
+margin-top:9px;
+padding:13px;
+background:#111520;
+border:1px solid #343a4b;
+color:white;
+border-radius:11px;
+cursor:pointer;
+}
+
+.choice:hover{
+border-color:#9164ff;
+}
+
+/* TIMELINE */
+
+.timeline{
+padding-left:20px;
+}
+
+.event{
+border-left:2px solid #343948;
+padding:0 0 25px 20px;
+position:relative;
+}
+
+.event:before{
+content:"";
+width:10px;
+height:10px;
+border-radius:50%;
+background:#9568ff;
+position:absolute;
+left:-6px;
+top:3px;
+}
+
+/* MODAL */
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#000c;
+z-index:100;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.modal.show{
+display:flex;
+}
+
+.modalBox{
+max-width:700px;
+width:100%;
+background:#0e1119;
+border:1px solid #373d4e;
+border-radius:18px;
+padding:20px;
+max-height:90vh;
+overflow:auto;
+}
+
+.modalBox h2{
+margin-bottom:12px;
+}
+
+.modalBox p{
+color:#a0a8b8;
+line-height:1.6;
+margin-bottom:12px;
+}
+
+.evidenceImage{
+width:100%;
+border-radius:12px;
+overflow:hidden;
+margin-bottom:15px;
+}
+
+.evidenceImage svg{
+width:100%;
+display:block;
+}
+
+/* TOAST */
+
+.toast{
+position:fixed;
+right:20px;
+bottom:20px;
+background:#111520;
+border:1px solid #3a4051;
+padding:13px 17px;
+border-radius:12px;
+display:none;
+z-index:200;
+}
+
+.toast.show{
+display:block;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.scene{
+height:270px;
+}
+
+.wrap{
+padding:12px;
+}
+
+header{
+padding:0 12px;
+}
+
+.logo{
+font-size:13px;
+}
+
+.title{
+letter-spacing:-3px;
+}
+
+.card{
+padding:12px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+<div class="logo">
+THE LAST <span>MESSAGE</span>
+</div>
+
+<div class="status" id="saveStatus">
+INVESTIGAÇÃO • 0%
+</div>
+</header>
+
+
+<!-- MENU -->
+
+<section id="title" class="screen active">
+
+<div class="hero">
+
+<div class="heroCard">
+
+<div class="kicker">
+MISTÉRIO • INVESTIGAÇÃO • SUSPENSE
+</div>
+
+<div class="title">
+THE LAST<br>MESSAGE
+</div>
+
+<p class="subtitle">
+
+Uma mensagem misteriosa inicia uma investigação sobre o desaparecimento
+de Noah. Examine fotografias, gravações, documentos e câmeras.
+Converse com pessoas, conecte as pistas e descubra a verdade.
+
+</p>
+
+<div class="actions">
+
+<button class="btn primary" onclick="startGame()">
+INICIAR INVESTIGAÇÃO
+</button>
+
+<button class="btn" onclick="showHelp()">
+COMO JOGAR
+</button>
+
+<button class="btn" onclick="loadGame()">
+CARREGAR
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- JOGO -->
+
+<section id="game" class="screen">
+
+<div class="wrap">
+
+<div class="grid">
+
+
+<div class="card">
+
+<div class="scene" id="scene"></div>
+
+
+<div class="tabs">
+
+<button class="tab on"
+onclick="tab('evidence',this)">
+EVIDÊNCIAS
+</button>
+
+<button class="tab"
+onclick="tab('chat',this)">
+MENSAGENS
+</button>
+
+<button class="tab"
+onclick="tab('timeline',this)">
+LINHA DO TEMPO
+</button>
+
+</div>
+
+
+<div id="evidencePanel"></div>
+
+<div id="chatPanel" style="display:none"></div>
+
+<div id="timelinePanel" style="display:none"></div>
+
+</div>
+
+
+<!-- PAINEL -->
+
+<div class="card">
+
+<h3>PAINEL DA INVESTIGAÇÃO</h3>
+
+<br>
+
+<div class="stat">
+<span>Confiança</span>
+<b id="trustText">50%</b>
+</div>
+
+<div class="bar">
+<div class="fill" id="trustBar"></div>
+</div>
+
+<br>
+
+<div class="stat">
+<span>Pistas encontradas</span>
+<b id="clueText">0/8</b>
+</div>
+
+<div class="stat">
+<span>Capítulo</span>
+<b id="chapterText">1</b>
+</div>
+
+<hr style="border-color:#252936;margin:18px 0">
+
+
+<div class="list">
+
+<button class="btn"
+onclick="inspectScene()">
+🔎 EXAMINAR CENA
+</button>
+
+<button class="btn"
+onclick="openChat()">
+💬 FALAR COM CONTATOS
+</button>
+
+<button class="btn"
+onclick="showTimeline()">
+🕘 LINHA DO TEMPO
+</button>
+
+<button class="btn"
+onclick="saveGame()">
+💾 SALVAR
+</button>
+
+<button class="btn primary"
+onclick="finish()">
+🏁 ENCERRAR INVESTIGAÇÃO
+</button>
+
+</div>
+
+<br>
+
+<p style="color:#6e7687;font-size:11px;line-height:1.5">
+
+Nem toda pista é verdadeira.
+Algumas informações podem ter sido manipuladas.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section id="ending" class="screen">
+
+<div class="hero">
+
+<div class="heroCard">
+
+<div class="kicker">
+INVESTIGAÇÃO ENCERRADA
+</div>
+
+<div class="title" id="endingTitle">
+A VERDADE
+</div>
+
+<p class="subtitle" id="endingText"></p>
+
+<div class="actions">
+
+<button class="btn primary"
+onclick="location.reload()">
+JOGAR NOVAMENTE
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+<div class="modalBox">
+
+<div id="modalContent"></div>
+
+<div class="actions">
+
+<button class="btn"
+onclick="closeModal()">
+FECHAR
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+</div>
+
+
+<script>
+
+/* ================================
+ESTADO DO JOGO
+================================ */
+
+const S = {
+
+started:false,
+
+chapter:1,
+
+trust:50,
+
+clues:new Set(),
+
+currentScene:"apartment",
+
+messages:[],
+
+flags:{}
+
+};
+
+
+/* ================================
+PISTAS
+================================ */
+
+const clues = {
+
+photo:{
+icon:"📷",
+title:"Fotografia rasgada",
+desc:"Uma fotografia mostra Noah diante de um prédio abandonado.",
+need:0,
+scene:"apartment",
+
+svg:`
+<svg viewBox="0 0 900 520">
+
+<defs>
+
+<linearGradient id="photoBg"
+x2="0" y2="1">
+
+<stop stop-color="#1d2332"/>
+
+<stop offset="1"
+stop-color="#05060a"/>
+
+</linearGradient>
+
+</defs>
+
+<rect width="900"
+height="520"
+fill="url(#photoBg)"/>
+
+<rect
+x="190"
+y="70"
+width="520"
+height="350"
+fill="#202633"/>
+
+<rect
+x="250"
+y="120"
+width="100"
+height="220"
+fill="#080b12"/>
+
+<rect
+x="400"
+y="120"
+width="100"
+height="220"
+fill="#080b12"/>
+
+<rect
+x="550"
+y="120"
+width="100"
+height="220"
+fill="#080b12"/>
+
+<circle
+cx="450"
+cy="285"
+r="60"
+fill="#777f91"/>
+
+<circle
+cx="430"
+cy="270"
+r="8"
+fill="#111"/>
+
+<circle
+cx="470"
+cy="270"
+r="8"
+fill="#111"/>
+
+<path
+d="M425 305 Q450 325 475 305"
+stroke="#111"
+stroke-width="6"
+fill="none"/>
+
+<text
+x="450"
+y="470"
+text-anchor="middle"
+fill="#929aaa"
+font-size="22">
+NOAH • 23:04
+</text>
+
+</svg>
+`
+},
+
+
+audio:{
+icon:"🎧",
+title:"Gravação — 23:17",
+desc:"Uma gravação contém uma voz sussurrando três palavras.",
+need:1,
+scene:"street"
+},
+
+
+receipt:{
+icon:"🧾",
+title:"Recibo do Terminal Norte",
+desc:"Uma compra foi registrada às 23:42.",
+need:1,
+scene:"station",
+
+svg:`
+<svg viewBox="0 0 900 520">
+
+<rect
+width="900"
+height="520"
+fill="#171a20"/>
+
+<rect
+x="280"
+y="35"
+width="340"
+height="450"
+fill="#ded8c8"/>
+
+<text
+x="450"
+y="90"
+text-anchor="middle"
+font-size="27"
+font-family="monospace"
+fill="#222">
+TERMINAL NORTE
+</text>
+
+<text
+x="330"
+y="145"
+font-size="20"
+font-family="monospace"
+fill="#222">
+23:42:18
+</text>
+
+<text
+x="330"
+y="195"
+font-size="18"
+font-family="monospace"
+fill="#222">
+CAFÉ + PASSAGEM
+</text>
+
+<text
+x="330"
+y="245"
+font-size="18"
+font-family="monospace"
+fill="#222">
+BOX 17-B
+</text>
+
+<line
+x1="330"
+y1="270"
+x2="570"
+y2="270"
+stroke="#555"/>
+
+<text
+x="450"
+y="330"
+text-anchor="middle"
+font-size="32"
+font-family="monospace"
+fill="#222">
+04 17 09
+</text>
+
+</svg>
+`
+},
+
+
+key:{
+icon:"🔑",
+title:"Chave 17-B",
+desc:"Uma pequena chave marcada com 17-B.",
+need:2,
+scene:"station",
+
+svg:`
+<svg viewBox="0 0 900 520">
+
+<rect width="900"
+height="520"
+fill="#090b10"/>
+
+<circle
+cx="420"
+cy="260"
+r="90"
+fill="none"
+stroke="#b7a66a"
+stroke-width="22"/>
+
+<path
+d="M490 260
+L740 260
+L740 220
+L790 220
+L790 300
+L750 300
+L750 280
+L700 280
+L700 315
+L660 315
+L660 280
+L490 280Z"
+fill="#b7a66a"/>
+
+<text
+x="450"
+y="430"
+text-anchor="middle"
+fill="#d8c786"
+font-size="34">
+17-B
+</text>
+
+</svg>
+`
+},
+
+
+room:{
+icon:"🚪",
+title:"Sala 17-B",
+desc:"Uma sala escondida atrás da plataforma.",
+need:3,
+scene:"room",
+
+svg:`
+<svg viewBox="0 0 900 520">
+
+<rect
+width="900"
+height="520"
+fill="#08090d"/>
+
+<rect
+x="130"
+y="60"
+width="640"
+height="390"
+fill="#171b25"/>
+
+<rect
+x="320"
+y="80"
+width="260"
+height="370"
+fill="#080a0e"
+stroke="#8b6b4b"
+stroke-width="10"/>
+
+<circle
+cx="535"
+cy="270"
+r="9"
+fill="#d6b56c"/>
+
+<text
+x="450"
+y="485"
+text-anchor="middle"
+fill="#9da5b5"
+font-size="20">
+17-B • ACESSO RESTRITO
+</text>
+
+</svg>
+`
+},
+
+
+code:{
+icon:"🧩",
+title:"Código incompleto",
+desc:"04 — 17 — 09. Parece uma sequência importante.",
+need:3,
+scene:"room"
+},
+
+
+video:{
+icon:"📼",
+title:"Quadro de vigilância",
+desc:"Uma câmera mostra alguém deixando a plataforma às 23:49.",
+need:4,
+scene:"station"
+},
+
+
+final:{
+icon:"📁",
+title:"Arquivo NOAH_FINAL",
+desc:"O arquivo mostra que registros foram apagados.",
+need:5,
+scene:"room"
+}
+
+};
+
+
+/* ================================
+INICIAR
+================================ */
+
+function startGame(){
+
+S.started=true;
+
+document
+.getElementById("title")
+.classList.remove("active");
+
+document
+.getElementById("game")
+.classList.add("active");
+
+sound(440,.08);
+
+render();
+
+saveGame(true);
+}
+
+
+/* ================================
+RENDER
+================================ */
+
+function render(){
+
+document
+.getElementById("trustText")
+.textContent=S.trust+"%";
+
+document
+.getElementById("trustBar")
+.style.width=S.trust+"%";
+
+document
+.getElementById("clueText")
+.textContent=
+S.clues.size+"/8";
+
+document
+.getElementById("chapterText")
+.textContent=
+S.chapter;
+
+document
+.getElementById("saveStatus")
+.textContent=
+"INVESTIGAÇÃO • "+
+Math.round(S.clues.size/8*100)+"%";
+
+renderEvidence();
+
+renderScene();
+}
+
+
+/* ================================
+CENA
+================================ */
+
+function renderScene(){
+
+let svg="";
+
+if(S.currentScene==="apartment"){
+
+svg=clues.photo.svg;
+
+}
+
+else if(S.currentScene==="station"){
+
+svg=clues.receipt.svg;
+
+}
+
+else if(S.currentScene==="room"){
+
+svg=clues.room.svg;
+
+}
+
+else{
+
+svg=`
+
+<svg viewBox="0 0 900 520">
+
+<rect
+width="900"
+height="520"
+fill="#07090e"/>
+
+<circle
+cx="450"
+cy="250"
+r="170"
+fill="#111622"
+stroke="#343b4d"/>
+
+<circle
+cx="390"
+cy="240"
+r="14"
+fill="#9568ff"/>
+
+<circle
+cx="510"
+cy="240"
+r="14"
+fill="#9568ff"/>
+
+<path
+d="M350 290 Q450 340 550 290"
+fill="none"
+stroke="#858ea0"
+stroke-width="10"/>
+
+<text
+x="450"
+y="380"
+text-anchor="middle"
+fill="#a0a8b8"
+font-size="24">
+SINAL INTERMITENTE
+</text>
+
+</svg>
+
+`;
+
+}
+
+document
+.getElementById("scene")
+.innerHTML=
+svg+
+`
+<div class="sceneLabel">
+${S.currentScene.toUpperCase()} • 23:${S.chapter===1?"17":"49"}
+</div>
+`;
+}
+
+
+/* ================================
+EVIDÊNCIAS
+================================ */
+
+function renderEvidence(){
+
+let html="";
+
+Object
+.entries(clues)
+.forEach(([id,c])=>{
+
+const unlocked=
+S.clues.has(id) ||
+c.need<=S.clues.size;
+
+html+=`
+
+<div
+class="clue ${unlocked?"":"lock"}"
+${unlocked?
+`onclick="openClue('${id}')"`:""}>
+
+<div class="icon">
+
+${unlocked?c.icon:"🔒"}
+
+</div>
+
+<div>
+
+<b>
+${unlocked?
+c.title:
+"Evidência bloqueada"}
+</b>
+
+<small>
+
+${unlocked?
+c.desc:
+"Colete mais pistas."}
+
+</small>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document
+.getElementById("evidencePanel")
+.innerHTML=
+`<div class="list">${html}</div>`;
+}
+
+
+/* ================================
+ABRIR PISTA
+================================ */
+
+function openClue(id){
+
+const c=clues[id];
+
+S.clues.add(id);
+
+if(c.scene){
+
+S.currentScene=c.scene;
+
+}
+
+if(id==="audio"){
+
+playAudio();
+
+toast(
+"Áudio: NÃO CONFIE • TERMINAL • 17-B"
+);
+
+}
+
+if(id==="video"){
+
+toast(
+"Frame encontrado: 23:49"
+);
+
+}
+
+if(id==="final"){
+
+S.chapter=3;
+
+toast(
+"Arquivo restaurado."
+);
+
+}
+
+render();
+
+saveGame();
+
+modal(`
+
+<div class="evidenceImage">
+
+${
+c.svg ||
+`
+<div style="
+height:250px;
+display:grid;
+place-items:center;
+background:#121621;
+font-size:70px">
+${c.icon}
+</div>
+`
+}
+
+</div>
+
+<h2>${c.title}</h2>
+
+<p>${c.desc}</p>
+
+<p>
+Evidência adicionada à investigação.
+</p>
+
+`);
+
+}
+
+
+/* ================================
+EXAMINAR
+================================ */
+
+function inspectScene(){
+
+if(
+S.currentScene==="apartment" &&
+!S.clues.has("photo")
+){
+
+S.clues.add("photo");
+
+toast(
+"Você encontrou uma fotografia."
+);
+
+}
+
+else if(
+S.currentScene==="station" &&
+!S.clues.has("receipt")
+){
+
+S.clues.add("receipt");
+
+toast(
+"Você encontrou um recibo."
+);
+
+}
+
+else if(
+S.currentScene==="room" &&
+!S.clues.has("code")
+){
+
+S.clues.add("code");
+
+toast(
+"Existe um código atrás da porta."
+);
+
+}
+
+else if(!S.clues.has("video")){
+
+S.clues.add("video");
+
+toast(
+"Você encontrou um frame da câmera."
+);
+
+}
+
+else if(!S.clues.has("final")){
+
+S.clues.add("final");
+
+toast(
+"Arquivo oculto encontrado."
+);
+
+}
+
+render();
+
+saveGame();
+
+}
+
+
+/* ================================
+ABAS
+================================ */
+
+function tab(name,button){
+
+document
+.querySelectorAll(".tab")
+.forEach(x=>x.classList.remove("on"));
+
+button.classList.add("on");
+
+document
+.getElementById("evidencePanel")
+.style.display=
+name==="evidence"?
+"block":"none";
+
+document
+.getElementById("chatPanel")
+.style.display=
+name==="chat"?
+"block":"none";
+
+document
+.getElementById("timelinePanel")
+.style.display=
+name==="timeline"?
+"block":"none";
+
+if(name==="chat")
+renderChat();
+
+if(name==="timeline")
+renderTimeline();
+
+}
+
+
+/* ================================
+CHAT
+================================ */
+
+function openChat(){
+
+const tabButton=
+document.querySelectorAll(".tab")[1];
+
+tab("chat",tabButton);
+
+}
+
+
+function renderChat(){
+
+document
+.getElementById("chatPanel")
+.innerHTML=`
+
+<div class="chat" id="chat">
+
+<div class="bubble them">
+
+<b>LIA</b><br>
+
+Você recebeu a mensagem de Noah também?
+
+</div>
+
+<div class="bubble me">
+
+Recebi. Diziam para não confiar em ninguém.
+
+</div>
+
+<div class="bubble them">
+
+Então precisamos descobrir por que
+ele citou o Terminal Norte.
+
+</div>
+
+</div>
+
+
+<div style="margin-top:12px">
+
+<button class="choice"
+onclick="choice('direct')">
+
+“O que você está escondendo, Lia?”
+
+</button>
+
+<button class="choice"
+onclick="choice('trust')">
+
+“Quero confiar em você. Conte tudo.”
+
+</button>
+
+<button class="choice"
+onclick="choice('evidence')">
+
+“Tenho uma pista. O que é 17-B?”
+
+</button>
+
+</div>
+
+`;
+
+}
+
+
+/* ================================
+ESCOLHAS
+================================ */
+
+function choice(x){
+
+if(x==="direct"){
+
+S.trust-=12;
+
+S.messages.push(
+"Você pressionou Lia."
+);
+
+addMessage(
+"LIA",
+"Eu sabia que você perguntaria. Noah investigava alguém dentro do terminal."
+);
+
+S.clues.add("audio");
+
+S.chapter=2;
+
+}
+
+
+if(x==="trust"){
+
+S.trust+=14;
+
+S.messages.push(
+"Você confiou em Lia."
+);
+
+addMessage(
+"LIA",
+"Ele deixou uma gravação comigo. Se desaparecesse, eu deveria entregar a você."
+);
+
+S.clues.add("audio");
+
+S.chapter=2;
+
+}
+
+
+if(x==="evidence"){
+
+S.trust+=4;
+
+S.messages.push(
+"Você revelou a pista."
+);
+
+addMessage(
+"LIA",
+"17-B não é uma sala comum. É onde guardavam arquivos antigos."
+);
+
+S.clues.add("key");
+
+S.currentScene="station";
+
+S.chapter=2;
+
+}
+
+if(S.trust>100)
+S.trust=100;
+
+if(S.trust<0)
+S.trust=0;
+
+render();
+
+saveGame();
+
+}
+
+
+function addMessage(name,text){
+
+const chat=
+document.getElementById("chat");
+
+if(!chat)return;
+
+chat.innerHTML+=`
+
+<div class="bubble them">
+
+<b>${name}</b><br>
+
+${text}
+
+</div>
+
+`;
+
+chat.scrollTop=
+chat.scrollHeight;
+
+}
+
+
+/* ================================
+TIMELINE
+================================ */
+
+function showTimeline(){
+
+const tabButton=
+document.querySelectorAll(".tab")[2];
+
+tab("timeline",tabButton);
+
+}
+
+
+function renderTimeline(){
+
+document
+.getElementById("timelinePanel")
+.innerHTML=`
+
+<div class="timeline">
+
+<div class="event">
+
+<b>22:58</b>
+
+<p>
+Noah envia sua última mensagem.
+</p>
+
+</div>
+
+
+<div class="event">
+
+<b>23:17</b>
+
+<p>
+Gravação de áudio registrada.
+</p>
+
+</div>
+
+
+<div class="event">
+
+<b>23:42</b>
+
+<p>
+Compra registrada no Terminal Norte.
+</p>
+
+</div>
+
+
+<div class="event">
+
+<b>23:49</b>
+
+<p>
+Câmera registra uma pessoa deixando
+a plataforma.
+</p>
+
+</div>
+
+
+<div class="event">
+
+<b>00:03</b>
+
+<p>
+Arquivo NOAH_FINAL é modificado.
+</p>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+
+/* ================================
+MODAL
+================================ */
+
+function modal(html){
+
+document
+.getElementById("modalContent")
+.innerHTML=html;
+
+document
+.getElementById("modal")
+.classList.add("show");
+
+}
+
+
+function closeModal(){
+
+document
+.getElementById("modal")
+.classList.remove("show");
+
+}
+
+
+/* ================================
+TOAST
+================================ */
+
+function toast(text){
+
+const t=
+document.getElementById("toast");
+
+t.textContent=text;
+
+t.classList.add("show");
+
+setTimeout(()=>{
+
+t.classList.remove("show");
+
+},2500);
+
+}
+
+
+/* ================================
+SAVE
+================================ */
+
+function saveGame(silent=false){
+
+const data={
+
+chapter:S.chapter,
+
+trust:S.trust,
+
+clues:[...S.clues],
+
+scene:S.currentScene,
+
+messages:S.messages
+
+};
+
+localStorage.setItem(
+"the_last_message_save",
+JSON.stringify(data)
+);
+
+if(!silent)
+toast("Investigação salva.");
+
+}
+
+
+/* ================================
+LOAD
+================================ */
+
+function loadGame(){
+
+const saved=
+localStorage.getItem(
+"the_last_message_save"
+);
+
+if(!saved){
+
+toast(
+"Nenhum salvamento encontrado."
+);
+
+return;
+
+}
+
+const d=
+JSON.parse(saved);
+
+S.started=true;
+
+S.chapter=d.chapter;
+
+S.trust=d.trust;
+
+S.clues=
+new Set(d.clues);
+
+S.currentScene=
+d.scene;
+
+S.messages=
+d.messages||[];
+
+document
+.getElementById("title")
+.classList.remove("active");
+
+document
+.getElementById("game")
+.classList.add("active");
+
+render();
+
+toast(
+"Investigação carregada."
+);
+
+}
+
+
+/* ================================
+FINAL
+================================ */
+
+function finish(){
+
+let title="";
+
+let text="";
+
+
+if(
+S.clues.size>=7 &&
+S.trust>=65
+){
+
+title="A VERDADE";
+
+text=
+"Você conseguiu conectar as principais evidências. Noah estava investigando uma pessoa que manipulava os registros do Terminal Norte. Antes de desaparecer, ele deixou provas suficientes para revelar o esquema.";
+
+}
+
+
+else if(
+S.trust<30
+){
+
+title="FALSA PISTA";
+
+text=
+"Você confiou nas informações erradas. Uma das pistas foi plantada para afastá-lo da verdade. Noah continua desaparecido.";
+
+}
+
+
+else{
+
+title="ARQUIVO INCOMPLETO";
+
+text=
+"Você descobriu parte da verdade, mas ainda existem perguntas sem resposta. O desaparecimento de Noah continua cercado de mistério.";
+
+}
+
+
+document
+.getElementById("game")
+.classList.remove("active");
+
+document
+.getElementById("ending")
+.classList.add("active");
+
+document
+.getElementById("endingTitle")
+.textContent=title;
+
+document
+.getElementById("endingText")
+.textContent=text;
+
+}
+
+
+/* ================================
+AJUDA
+================================ */
+
+function showHelp(){
+
+modal(`
+
+<h2>COMO JOGAR</h2>
+
+<p>
+🔎 Examine os locais para encontrar pistas.
+</p>
+
+<p>
+💬 Converse com os personagens.
+</p>
+
+<p>
+🧩 Algumas pistas desbloqueiam outras.
+</p>
+
+<p>
+❤️ Suas escolhas alteram a confiança.
+</p>
+
+<p>
+🕘 Use a linha do tempo para entender
+os acontecimentos.
+</p>
+
+<p>
+🏁 Existem diferentes finais.
+</p>
+
+`);
+
+}
+
+
+/* ================================
+ÁUDIO PROCEDURAL
+================================ */
+
+let audioContext=null;
+
+
+function initAudio(){
+
+if(!audioContext){
+
+audioContext=
+new(
+window.AudioContext||
+window.webkitAudioContext
+)();
+
+}
+
+}
+
+
+function sound(freq,duration=.1){
+
+try{
+
+initAudio();
+
+const osc=
+audioContext.createOscillator();
+
+const gain=
+audioContext.createGain();
+
+osc.frequency.value=freq;
+
+osc.type="sine";
+
+gain.gain.setValueAtTime(
+.0001,
+audioContext.currentTime
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.12,
+audioContext.currentTime+.01
+);
+
+gain.gain.exponentialRampToValueAtTime(
+.0001,
+audioContext.currentTime+duration
+);
+
+osc
+.connect(gain)
+.connect(audioContext.destination);
+
+osc.start();
+
+osc.stop(
+audioContext.currentTime+
+duration+
+.02
+);
+
+}
+
+catch(e){}
+
+}
+
+
+function playAudio(){
+
+[
+220,
+196,
+165,
+130
+].forEach((freq,i)=>{
+
+setTimeout(
+()=>sound(freq,.17),
+i*180
+);
+
+});
+
+}
+
+
+/* ================================
+TECLADO
+================================ */
+
+document.addEventListener(
+"keydown",
+event=>{
+
+if(event.key==="Escape")
+closeModal();
+
+if(event.key===" " && S.started){
+
+event.preventDefault();
+
+sound(180,.05);
+
+}
+
+});
+
+
+document.addEventListener(
+"click",
+()=>{
+
+try{
+initAudio();
+}
+catch(e){}
+
+},
+{once:true}
+);
+
+</script>
+
+</body>
+</html>
